@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.Init;
+package ru.kata.spring.boot_security.demo.init;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -41,13 +41,19 @@ public class Init implements ApplicationListener<ContextRefreshedEvent> {
         Set<Role> adminRoles = new HashSet<>(Arrays.asList(adminRole));
 
         User admin = new User ();
-        admin.setUsername("admin");
+        admin.setEmail("admin@mail.ru");
         admin.setPassword(passwordEncoder.encode("admin"));
+        admin.setFirstName("admin");
+        admin.setLastName("admin");
+        admin.setAge((byte) 30);
         admin.setRoles(adminRoles);
 
         User user = new User();
-        user.setUsername("user");
+        user.setEmail("user@mail.ru");
         user.setPassword(passwordEncoder.encode("user"));
+        user.setFirstName("user");
+        user.setLastName("user");
+        user.setAge((byte) 30);
         user.setRoles(userRoles);
 
         userRepository.save(admin);

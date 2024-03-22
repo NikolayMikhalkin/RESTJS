@@ -6,11 +6,20 @@
 </head>
 <body>
 <form th:method="patch" th:action="@{/admin/update-user}" th:object="${userUpd}">
-    <label for="nm">Username:</label>
-    <input id="nm" type="text" th:field="*{username}" th:value="${userUpd.getUsername()}">
+    <label for="firstname">First Name:</label>
+    <input id="firstname" type="text" th:field="*{firstName}" th:value="${userUpd.getFirstName()}">
     <br>
-    <label for="lstnm">Password:</label>
-    <input id="lstnm" type="text" th:field="*{password}" th:value="${userUpd.getPassword()}">
+    <label for="lastname">Last Name:</label>
+    <input id="lastname" type="text" th:field="*{lastName}" th:value="${userUpd.getLastName()}">
+    <br>
+    <label for="age">Age:</label>
+    <input id="age" type="text" th:field="*{age}" th:value="${userUpd.getAge()}">
+    <br>
+    <label for="email">Email:</label>
+    <input id="email" type="text" th:field="*{email}" th:value="${userUpd.getEmail()}">
+    <br>
+    <label for="password">Password:</label>
+    <input id="password" type="text" th:field="*{email}" th:value="${userUpd.getEmail()}">
     <br>
     <input type="hidden" th:field="*{id}" th:value="${userUpd.getId()}">
     <input type="hidden" th:field="*{password}" th:value="${userUpd.getPassword()}">

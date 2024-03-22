@@ -8,6 +8,8 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleServiceImp;
 import ru.kata.spring.boot_security.demo.services.UserServiceImp;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping
 public class AdminController {
@@ -27,7 +29,9 @@ public class AdminController {
     }
 
     @GetMapping("/admin/users")
-    public String getAllUsers(Model model) {
+    public String getAllUsers(Model model, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        model.addAttribute("user", user);
         model.addAttribute("users", userService.findAll());
         return "users";
     }

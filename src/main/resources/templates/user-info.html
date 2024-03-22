@@ -10,16 +10,20 @@
     <br>
     <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Password</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+        <th>Email</th>
         <th>Roles</th>
     </tr>
     <br>
 
     <tr th:each="user : ${user}">
-        <td th:text="${user.getId()}"></td>
-        <td th:text="${user.getUsername()}"></td>
-        <td th:text="${user.getPassword()}"></td>
+        <td th:text="${user.getId()}"/>
+        <td th:text="${user.getFirstName()}"/>
+        <td th:text="${user.getLastName()}"/>
+        <td th:text="${user.getAge()}"/>
+        <td th:text="${user.getEmail()}"/>
         <td>
             <a th:each="role: ${user.getRoles()}" th:text="${role.getRole()}" ></a>
         </td>
