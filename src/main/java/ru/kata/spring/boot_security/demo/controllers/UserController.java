@@ -23,7 +23,14 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping()
+    public String userPage(Model model, Principal principal) {
+        User user = userRepository.findUserByUsername(principal.getName());
+        model.addAttribute("user", user);
+        model.addAttribute("users", userService.findAll());
+        return "user";
+    }
+    /*@GetMapping("/")
     public String getHomePage() {
         return "index";
     }
@@ -38,5 +45,5 @@ public class UserController {
         User user = userRepository.findUserByUsername(principal.getName());
         model.addAttribute("user", user);
         return "user-info";
-    }
+    }*/
 }
