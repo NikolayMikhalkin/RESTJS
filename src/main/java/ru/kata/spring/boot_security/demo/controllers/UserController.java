@@ -30,20 +30,4 @@ public class UserController {
         model.addAttribute("users", userService.findAll());
         return "user";
     }
-    /*@GetMapping("/")
-    public String getHomePage() {
-        return "index";
-    }
-
-    @GetMapping("/user")
-    public String getUserPage() {
-        return "user";
-    }
-
-    @GetMapping("/user-info")
-    public String getUserInfoPage(Model model, Principal principal) {
-        User user = userRepository.findUserByUsername(principal.getName());
-        model.addAttribute("user", user);
-        return "user-info";
-    }*/
 }

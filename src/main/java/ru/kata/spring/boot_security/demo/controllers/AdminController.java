@@ -37,41 +37,40 @@ public class AdminController {
     }
 
     @GetMapping("/user")
-    public String userPageInfo(Model model, Principal principal) {
+    public String getUserPageInfo(Model model, Principal principal) {
         model.addAttribute("user", userRepository.findUserByUsername(principal.getName()));
         return "user";
     }
 
-    /*@GetMapping("/admin/update-user")
-    public String getUpdateUserPage(Model model, @ModelAttribute("userUpd") User user) {
-        model.addAttribute("userUpd", user);
-        model.addAttribute("roles", roleService.getAllRoles());
-        return "update-user";
-    }*/
+    @GetMapping("/new")
+    public String getCreateUserPage(Model model, Model role) {
+        role.addAttribute("rolesList", roleService.getAllRoles());
+        model.addAttribute("user", new User());
+        return "new";
+    }
 
-    /*@PostMapping("/admin/update-user")
-    public String updateUser(@ModelAttribute("userUpd") User user) {
-        userService.update(user);
-        return "redirect:/admin";
-    }*/
-
-    /*@GetMapping("/admin/create-user")
-    public String getCreateUserPage(Model model) {
-        model.addAttribute("userCr", new User());
-        model.addAttribute("roles", roleService.getAllRoles());
-        return "create-user";
-    }*/
-
-    /*@PostMapping("/admin/create-user")
-    public String createUser(@ModelAttribute("userCr") User user) {
+    @PostMapping("/admin/new")
+    public String add(@ModelAttribute("newUser") User user){
         userService.save(user);
         return "redirect:/admin";
-    }*/
+    }
 
-   /* @GetMapping("/admin/remove-user")
-    public String deleteUser(@RequestParam("id") Integer id) {
+    @GetMapping("/admin/update-user")
+    public String getUpdateUserPage(Model model, @ModelAttribute("user") User user) {
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roleService.getAllRoles());
+        return "edit";
+    }
+
+    @PostMapping("/admin/update-user")
+    public String updateUser(@ModelAttribute("user") User user) {
+        userService.update(user);
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/admin/remove-user")
+    public String deleteUser(@RequestParam Integer id) {
         userService.getDelete(id);
         return "redirect:/admin";
-    }*/
-
+    }
 }
