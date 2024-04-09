@@ -6,6 +6,20 @@ $(async function () {
     await newUser();
 });
 
+const userFetchService = {
+    head: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Referer': null
+    },
+    // bodyAdd : async function(user) {return {'method': 'POST', 'headers': this.head, 'body': user}},
+    findAllUsers: async () => await fetch('api/admin'),
+    findOneUser: async (id) => await fetch(`api/admin/users/${id}`),
+    addNewUser: async (user) => await fetch('api/admin/users', {method: 'POST', headers: userFetchService.head, body: JSON.stringify(user)}),
+    updateUser: async (user, id) => await fetch(`api/admin/users/${id}`, {method: 'PUT', headers: userFetchService.head, body: JSON.stringify(user)}),
+    deleteUser: async (id) => await fetch(`api/admin/users/${id}`, {method: 'DELETE', headers: userFetchService.head})
+}
+
 async function getUser(id) {
     let url = "http://localhost:8080/api/admin/user/" + id;
     let response = await fetch(url);
@@ -17,18 +31,18 @@ async function getUser(id) {
 const tbody = $('#tableBodyAdmin');
 async function allUsers() {
     tbody.empty()
-    fetch("http://localhost:8080/api/admin")
+    await userFetchService.findAllUsers()
         .then(res => res.json())
         .then(data => {
             data.forEach(user => {
                 let usersTable = `$(
                         <tr>
                             <td>${user.id}</td>
-                            <td>${user.name}</td>
+                            <td>${user.firstName}</td>
                             <td>${user.lastName}</td>
                             <td>${user.age}</td>
-                            <td>${user.username}</td>
-                            <td>${user.roles.map(role => " " + role.roleName)}</td>
+                            <td>${user.email}</td>
+                            <td>${user.roles.map(role => " " + role.role.replace('ROLE_', ''))}</td>
                             <td>
                                 <button type="button" class="btn btn-info" data-bs-toggle="modal" id="editButton"
                                 data-action="editModal"  data-id="${user.id}" data-bs-target="#editModal">Edit</button>
@@ -63,15 +77,14 @@ function editUser() {
         fetch("http://localhost:8080/api/admin/user/" + editForm.id.value, {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin": "*"
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 id: editForm.id.value,
-                name: editForm.name.value,
+                firstName: editForm.firstName.value,
                 lastName: editForm.lastName.value,
                 age: editForm.age.value,
-                username: editForm.username.value,
+                email: editForm.email.value,
                 password: editForm.password.value,
                 roles: editUserRoles
             })
@@ -93,10 +106,10 @@ async function showEditModal(id) {
     let user = await getUser(id);
     let form = document.forms["editUserForm"];
     form.id.value = user.id;
-    form.name.value = user.name;
+    form.name.value = user.firstName;
     form.lastName.value = user.lastName;
     form.age.value = user.age;
-    form.username.value = user.username;
+    form.username.value = user.email;
     form.password.value = user.password;
 
     await fetch("http://localhost:8080/api/admin/roles")
@@ -105,13 +118,13 @@ async function showEditModal(id) {
             roles.forEach(role => {
                 let selectedRole = false;
                 for (let i = 0; i < user.roles.length; i++) {
-                    if (user.roles[i].roleName === role.roleName) {
+                    if (user.roles[i].role === role.role) {
                         selectedRole = true;
                         break;
                     }
                 }
                 let el = document.createElement("option");
-                el.text = role.roleName;
+                el.text = role.role.replace('ROLE_', '');
                 el.value = role.id;
                 if (selectedRole) el.selected = true;
                 $('#rolesEdit')[0].appendChild(el);
@@ -151,10 +164,10 @@ async function showDeleteModal(id) {
     let form = document.forms["deleteUserForm"];
 
     form.id.value = user.id;
-    form.name.value = user.name;
+    form.name.value = user.firstName;
     form.lastName.value = user.lastName;
     form.age.value = user.age;
-    form.username.value = user.username;
+    form.username.value = user.email;
 
     await fetch("http://localhost:8080/api/admin/roles")
         .then(res => res.json())
@@ -162,13 +175,13 @@ async function showDeleteModal(id) {
             roles.forEach(role => {
                 let selectedRole = false;
                 for (let i = 0; i < user.roles.length; i++) {
-                    if (user.roles[i].roleName === role.roleName) {
+                    if (user.roles[i].role === role.role) {
                         selectedRole = true;
                         break;
                     }
                 }
                 let el = document.createElement("option");
-                el.text = role.roleName;
+                el.text = role.role;
                 el.value = role.id;
                 if (selectedRole) el.selected = true;
                 $('#rolesDelete')[0].appendChild(el);
@@ -184,7 +197,7 @@ async function newUser() {
         .then(roles => {
             roles.forEach(role => {
                 let el = document.createElement("option");
-                el.text = role.roleName;
+                el.text = role.role.replace('ROLE_', '');
                 el.value = role.id;
                 $('#rolesAdd')[0].appendChild(el);
             })
@@ -199,7 +212,7 @@ async function newUser() {
         for (let i = 0; i < form.roles.options.length; i++) {
             if (form.roles.options[i].selected) addRoles.push({
                 id : form.roles.options[i].value,
-                role : form.roles.options[i].roleName
+                role : form.roles.options[i].text
             })
         }
         fetch("http://localhost:8080/api/admin/new", {
@@ -208,10 +221,10 @@ async function newUser() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: form.name.value,
+                firstName: form.name.value,
                 lastName: form.lastName.value,
                 age: form.age.value,
-                username: form.username.value,
+                email: form.username.value,
                 password: form.password.value,
                 roles: addRoles
             })

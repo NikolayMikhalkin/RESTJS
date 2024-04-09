@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class UserServiceImp implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;

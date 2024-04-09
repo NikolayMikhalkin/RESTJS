@@ -28,4 +28,9 @@ public class RoleServiceImp implements RoleService {
     public void save(Role role) {
         roleRepository.save(role);
     }
+
+    @Override
+    public Role getRole(Long id) {
+        return roleRepository.getRoleById(id);
+    }
 }

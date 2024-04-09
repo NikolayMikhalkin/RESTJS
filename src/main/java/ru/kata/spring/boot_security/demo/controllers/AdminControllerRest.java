@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.apache.tomcat.util.http.parser.HttpParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +28,13 @@ public class AdminControllerRest {
     }
 
     @GetMapping()
-    public Collection<User> getAllUsers() {
-        return userService.findAll();// Jackson автоматически конвертирует объекты в JSON
-
+    public ResponseEntity<Collection<User>> getAllUsers() {
+        Collection<User> users = userService.findAll();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<Optional> getUserById(@PathVariable("id") Integer id) {
+    public ResponseEntity<Optional<User>> getUserById(@PathVariable("id") Integer id) {
         Optional<User> foundUser = userService.getById(id);
 
         return new ResponseEntity<>(foundUser, HttpStatus.OK);
