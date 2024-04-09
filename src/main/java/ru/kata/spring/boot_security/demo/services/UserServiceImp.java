@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,8 +35,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User getById(Integer id) {
-        return userRepository.getById(id);
+    public Optional<User> getById(Integer id) {
+        return userRepository.findById(id);
     }
 
     @Override

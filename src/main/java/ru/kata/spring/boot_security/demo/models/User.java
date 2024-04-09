@@ -13,14 +13,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "first_name")
-    private String firstName;
+    @Column(name = "name")
+    private String name;
     @Column(name = "last_name")
     private String lastName;
     @Column(name = "age")
     private Byte age;
     @Column(name = "email")
-    private String email;
+    private String username;
     @Column(name = "password")
     private String password;
     @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE})
@@ -36,10 +36,10 @@ public class User {
 
     public User(Integer id, String firstName, String lastName, Byte age, String email, String password, Set<Role> roles) {
         this.id = id;
-        this.firstName = firstName;
+        this.name = firstName;
         this.lastName = lastName;
         this.age = age;
-        this.email = email;
+        this.username = email;
         this.password = password;
         this.roles = roles;
     }
@@ -53,11 +53,11 @@ public class User {
     }
 
     public String getFirstName() {
-        return firstName;
+        return name;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.name = firstName;
     }
 
     public String getLastName() {
@@ -77,11 +77,11 @@ public class User {
     }
 
     public String getEmail() {
-        return email;
+        return username;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.username = email;
     }
 
     public String getPassword() {
