@@ -12,12 +12,7 @@ const userFetchService = {
         'Content-Type': 'application/json',
         'Referer': null
     },
-    // bodyAdd : async function(user) {return {'method': 'POST', 'headers': this.head, 'body': user}},
-    findAllUsers: async () => await fetch('api/admin'),
-    findOneUser: async (id) => await fetch(`api/admin/users/${id}`),
-    addNewUser: async (user) => await fetch('api/admin/users', {method: 'POST', headers: userFetchService.head, body: JSON.stringify(user)}),
-    updateUser: async (user, id) => await fetch(`api/admin/users/${id}`, {method: 'PUT', headers: userFetchService.head, body: JSON.stringify(user)}),
-    deleteUser: async (id) => await fetch(`api/admin/users/${id}`, {method: 'DELETE', headers: userFetchService.head})
+    findAllUsers: async () => await fetch('api/admin')
 }
 
 async function getUser(id) {
@@ -81,10 +76,10 @@ function editUser() {
             },
             body: JSON.stringify({
                 id: editForm.id.value,
-                firstName: editForm.firstName.value,
+                firstName: editForm.name.value,
                 lastName: editForm.lastName.value,
                 age: editForm.age.value,
-                email: editForm.email.value,
+                email: editForm.username.value,
                 password: editForm.password.value,
                 roles: editUserRoles
             })
@@ -118,7 +113,7 @@ async function showEditModal(id) {
             roles.forEach(role => {
                 let selectedRole = false;
                 for (let i = 0; i < user.roles.length; i++) {
-                    if (user.roles[i].role === role.role) {
+                    if (user.roles[i].role === role.roleName) {
                         selectedRole = true;
                         break;
                     }
@@ -181,7 +176,7 @@ async function showDeleteModal(id) {
                     }
                 }
                 let el = document.createElement("option");
-                el.text = role.role;
+                el.text = role.role.replace('ROLE_', '');
                 el.value = role.id;
                 if (selectedRole) el.selected = true;
                 $('#rolesDelete')[0].appendChild(el);
