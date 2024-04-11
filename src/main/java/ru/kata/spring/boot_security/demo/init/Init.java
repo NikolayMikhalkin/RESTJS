@@ -37,7 +37,7 @@ public class Init implements ApplicationListener<ContextRefreshedEvent> {
         adminRole.setRole("ROLE_ADMIN");
         roleServiceImp.save(adminRole);
 
-        Set<Role> userRoles = new HashSet<>(Arrays.asList(userRole));
+        Set<Role> userRoles = new HashSet<>(Arrays.asList(userRole, adminRole));
         Set<Role> adminRoles = new HashSet<>(Arrays.asList(adminRole));
 
         User admin = new User ();

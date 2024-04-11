@@ -64,7 +64,7 @@ function editUser() {
             if (editForm.roles.options[i].selected) {
                 editUserRoles.push({
                     id: editForm.roles.options[i].value,
-                    role: editForm.roles.options[i].text
+                    role: "ROLE_" + editForm.roles.options[i].text
                 })
             }
         }
